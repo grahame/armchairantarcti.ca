@@ -1,0 +1,8 @@
+html/img/
+html/theme/
+html/OpenLayers.js
+.*swp
+*.pyc
+*.pyo
+.DS_Store
+__pycache__
