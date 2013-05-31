@@ -7,7 +7,7 @@ server {
     }
 
     location / { 
-        alias /home/grahame/code/armchairantarcti.ca/html/;
+        alias /home/grahame/armchairantarcti.ca/html/;
     }
     location @yourapplication {
         include uwsgi_params;

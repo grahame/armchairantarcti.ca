@@ -4,5 +4,7 @@ html/OpenLayers.js
 .*swp
 *.pyc
 *.pyo
+OpenLayers-2.12
 .DS_Store
 __pycache__
+tmp/

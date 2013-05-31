@@ -1,3 +1,6 @@
 [submodule "openlayers"]
 	path = openlayers
 	url = https://github.com/openlayers/openlayers.git
+[submodule "mapproxy"]
+	path = mapproxy
+	url = https://github.com/mapproxy/mapproxy

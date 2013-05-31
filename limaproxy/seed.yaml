@@ -1,0 +1,13 @@
+seeds:
+  ant:
+    caches: [moa125_cache]
+    grids: [antarctica, antarctica_sqrt2]
+    coverages: [antarctica]
+    levels:
+      from: 0
+      to: 8
+
+coverages:
+  antarctica:
+    bbox: [-3250000, -3250000, 3250000, 3250000]
+    bbox_srs: 'EPSG:3031'

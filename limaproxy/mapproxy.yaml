@@ -1,0 +1,50 @@
+services:
+  wms:
+    srs: ['EPSG:3031']
+
+grids:
+  antarctica:
+    srs: 'EPSG:3031'
+    bbox: [-3250000, -3250000, 3250000, 3250000]
+    bbox_srs: 'EPSG:3031'
+  antarctica_sqrt2:
+    base: antarctica
+    res_factor: 'sqrt2'
+
+layers:
+  - name: MOA_125_HP1_150_170_STRETCH
+    title: MOA_125_HP1_150_170_STRETCH
+    sources: [moa125_cache]
+
+caches:
+  moa125_cache:
+    grids: [antarctica, antarctica_sqrt2]
+    sources: [moa_wms]
+
+sources:
+  moa_wms:
+    type: wms
+    supported_srs: ['EPSG:3031']
+    req:
+      url: http://imsref.cr.usgs.gov/wmsconnector/com.esri.wms.Esrimap/USGS_EDC_Antarctic_Data_20?
+      layers: MOA_125_HP1_150_170_STRETCH
+
+globals:
+  cache:
+    # where to store the cached images
+    base_dir: './cache_data'
+    # where to store lockfiles
+    lock_dir: './cache_data/locks'
+
+  # image/transformation options
+  image:
+      # resampling_method: nearest
+      resampling_method: bilinear
+      # resampling_method: bicubic
+  #     jpeg_quality: 90
+  #     # stretch cached images by this factor before
+  #     # using the next level
+  #     stretch_factor: 1.15
+  #     # shrink cached images up to this factor before
+  #     # returning an empty image (for the first level)
+  #     max_shrink_factor: 4.0
