@@ -8,3 +8,4 @@ OpenLayers-2.12
 .DS_Store
 __pycache__
 tmp/
+limaproxy/cache_data/
