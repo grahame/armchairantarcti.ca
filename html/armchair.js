@@ -27,13 +27,6 @@ $(function() {
         });
     map.addLayer(lima_layer);
 
-    map.zoomToExtent(map.getMaxExtent());
-
-//     var bounds = new OpenLayers.Bounds();
-//     bounds.extend(3250000,-3250000);
-//     bounds.extend(3250000,3250000);
-// //    bounds.extend(new OpenLayers.LonLat(-12367387.9301062, -12367395.2885885));
-// //    bounds.extend(new OpenLayers.LonLat(12367394.4707058, 12367392.0189054));
-//     map.zoomToExtent(bounds);
+    map.setCenter(new OpenLayers.LonLat(357500, 58500), 1);
 
 });
