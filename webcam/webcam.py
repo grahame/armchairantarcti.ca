@@ -11,6 +11,7 @@ class Cam(object):
     def __init__(self, name, uri, descr):
         self.name = name
         self.uri = uri
+        self.descr = descr
 
     def thumb_filename(self):
         return "tn_%s.jpg" % self.name
@@ -22,6 +23,7 @@ class Cam(object):
         return {
             "name" : self.name,
             "uri" : self.uri,
+            "descr" : self.descr,
             "tn" : "webcam/%s" % (self.thumb_filename())
         }
 

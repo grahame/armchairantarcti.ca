@@ -52,3 +52,15 @@ img.flag {
     max-height: 35px;
     border: 1px solid black;
 }
+
+#webcam {
+    position:absolute;
+    left:30px;
+    bottom:30px;
+    z-index:1000;
+    width:130px;
+    height:140px;
+    background-color: rgba(249, 128, 9, 0.7);
+    margin:0;
+    padding:0;
+}

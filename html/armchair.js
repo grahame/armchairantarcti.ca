@@ -111,7 +111,31 @@ $(function() {
             map.addLayer(vector_layer);
             top_ontop();
         });
-    }
+    };
+
+    var go_webcams = function() {
+        $.getJSON("/webcam.json", function(data) {
+            var webcams = data;
+            var webcam_idx = 0;
+
+            var swap_cam = function() {
+                if (webcams.length == 0) {
+                    return;
+                }
+                if (webcam_idx > webcams.length - 1) {
+                    webcam_idx = 0;
+                }
+                var cam = webcams[webcam_idx];
+                console.log(cam);
+                $("#webcam-img").attr('src', cam['tn']);
+                $("#webcam-a").attr('href', cam['uri']).attr('target', '_blank');
+                $("#webcam-name").text(cam['descr']);
+                webcam_idx++;
+            };
+            swap_cam();
+            setInterval(swap_cam, 5000);
+        });
+    };
 
     var add_points = function() {
         var our_icons = {};
@@ -151,7 +175,7 @@ $(function() {
             }
             $("#infobar").empty();
             $("#infobar").append(infobar_feed[infobar_idx]);
-            infobar_idx = infobar_idx + 1;
+            infobar_idx++;
         };
         setInterval(swap_tweetfeed, 5000);
         var add_infobar_tweetfeed = function(twits) {
@@ -279,6 +303,7 @@ $(function() {
     add_world_layer();
     add_claim_layer();
     add_points();
+    go_webcams();
 
     make_imos_layer("Seal tracking", "imos:ctd_profile_mdb_workflow_vw_recent");
     map.setCenter(new OpenLayers.LonLat(357500, 58500), 0);
