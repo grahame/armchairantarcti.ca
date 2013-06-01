@@ -167,6 +167,9 @@ $(function() {
             swap_tweetfeed();
         };
         var swap_tweetfeed = function() {
+            if (infobar_set) {
+                return;
+            }
             if (infobar_feed.length == 0) {
                 return;
             }
