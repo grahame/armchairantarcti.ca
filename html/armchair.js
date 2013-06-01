@@ -167,7 +167,7 @@ $(function() {
                         trove.append($("<img/>").attr('src', v['logo']));
                         body.append(trove);
                         var link = $("<div/>");
-                        link.append($("<a/>").attr('target', '_blank').attr('href', v['url']));
+                        link.append($("<a/>").attr('target', '_blank').attr('href', v['url']).text(v['label'] + ' on Trove'));
                         body.append(link);
                     });
                 }
@@ -188,7 +188,7 @@ $(function() {
                         body.append(tweet);
                     });
                 }
-                var visit = $("<p/>");
+                var visit = $("<p/>").css("border-top", "1px solid black").css("margin-top", "1em");
                 var a = $("<a/>").attr('href', station['url']).attr('target', '_blank');
                 a.text("More about " + station['label'] + ".");
                 visit.append(a);
