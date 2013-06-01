@@ -163,7 +163,7 @@ $(function() {
             $("#station-dialog").modal();
         };
 
-        $.getJSON("/point_data.json", function(data) {
+        $.getJSON("/point_data.json?" + (new Date().getTime()), function(data) {
             var make_stations = function() {
                 /* annotate the stations */
                 var layer = new OpenLayers.Layer.Markers("Stations");

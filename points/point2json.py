@@ -46,7 +46,7 @@ if __name__ == '__main__':
             if point_id is None:
                 continue
             if not stations.has_key(point_id):
-                stations[point_id] = {
+                station = stations[point_id] = {
                     'type' : typ(row),
                     'lat' : lat(row),
                     'lng' : lng(row), 
@@ -56,14 +56,40 @@ if __name__ == '__main__':
                     'established' : established(row),
                     'jurisdiction' : jurisdiction(row),
                     'url' : url(row),
-                    'twitter' : []
+                    'twitter' : [],
+                    'photos' : [],
+                    'trove' : [],
+                    'audio' : [],
+                    'webcam' : []
                 }
             elif stations.has_key(point_id):
-                existing = stations[point_id]
-                if point_type == "Twitter":
-                    existing['twitter'].append(twitter_username(url(row)))
-                else:
-                    print "unhandled subtype", point_type, url(row)
+                station = stations[point_id]
+            if point_type == "Station":
+                pass
+            elif point_type == "Twitter":
+                station['twitter'].append(twitter_username(url(row)))
+            elif point_type == "Photo":
+                station['photos'].append({
+                    'label' : label(row),
+                    'url' : url(row)    
+                })
+            elif point_type == "Trove Article":
+                station['trove'].append({
+                    'label' : label(row),
+                    'url' : url(row)
+                })
+            elif point_type == "Audio":
+                station['audio'].append({
+                    'label' : label(row),
+                    'url' : url(row)
+                })
+            elif point_type == "Webcam":
+                station['webcam'].append({
+                    'label' : label(row),
+                    'url' : url(row)
+                })
+            else:
+                print "unhandled base type", point_type, url(row)
         with open('../html/point_data.json', 'w') as wfd:
             json.dump(export, wfd, sort_keys=True, indent=4, separators=(',', ': '))
 
