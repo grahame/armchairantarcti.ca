@@ -10,11 +10,20 @@ $(function() {
         units: 'meters',
         projection: "EPSG:3031"
     });
+    var top_layer;
+
     map.addControl(new OpenLayers.Control.LayerSwitcher());
     /* for debugging, get rid of later */
     window.map = map;
     window.proj_wgs84 = proj_wgs84;
     window.proj_stereo = proj_stereo;
+
+    var top_ontop = function() {
+        if (top_layer) {
+            console.log("top_ontop");
+            map.setLayerIndex(top_layer, map.layers.length);
+        }
+    }
 
     var add_lima_layer = function() {
         var lima_layer = new OpenLayers.Layer.WMS("lima", 
@@ -31,6 +40,7 @@ $(function() {
                 projection: proj_stereo
             });
         map.addLayer(lima_layer);
+        top_ontop();
     };
 
     var make_imos_layer = function(name, layer_name) {
@@ -48,6 +58,7 @@ $(function() {
                 projection: proj_stereo
             });
         map.addLayer(seal_layer);
+        top_ontop();
     };
 
     /*
@@ -73,6 +84,7 @@ $(function() {
             var features = geojson_format.read(data);
             vector_layer.addFeatures(features);
             map.addLayer(vector_layer);
+            top_ontop();
         });
     }
 
@@ -97,6 +109,7 @@ $(function() {
             var features = geojson_format.read(data);
             vector_layer.addFeatures(features);
             map.addLayer(vector_layer);
+            top_ontop();
         });
     }
 
@@ -225,6 +238,7 @@ $(function() {
             var make_stations = function() {
                 /* annotate the stations */
                 var layer = new OpenLayers.Layer.Markers("Stations");
+                top_layer = layer;
                 map.addLayer(layer);
                 var stations = data['stations'];
                 $.each(stations, function(k, v) {
@@ -254,6 +268,7 @@ $(function() {
                         show_station_dialog(v);
                     });
                 });
+                top_ontop();
             };
             make_stations();
         });
