@@ -147,11 +147,39 @@ $(function() {
             var body = $("#station-dialog-body");
             body.empty();
             if (station['url']) {
-                var visit = $("<p/>");
-                var a = $("<a/>").attr('href', station['url']).attr('target', '_blank');
-                a.text("More about " + station['label'] + ".");
-                visit.append(a);
-                body.append(visit);
+                if (station['photo']) {
+                    $.each(station['photo'], function(k, v) {
+                        var photo = $("<div/>").attr('align', 'center').css('padding-bottom', '0.5em');
+                        var a = $("<a/>").attr('target', '_blank').attr('href', v['url']);
+                        photo.append($("<img/>").attr('src', v['url']));
+                        body.append(photo);
+                        var link = $("<div/>");
+                        link.append($("<a/>").attr('target', '_blank').attr('href', v['url']).text(v['label']));
+                        body.append(link);
+                    });
+                }
+                if (station['trove']) {
+                    $.each(station['trove'], function(k, v) {
+                        console.log("TROVE");
+                        console.log(v['url']);
+                        var trove = $("<div/>").attr('align', 'center');
+                        var a = $("<a/>").attr('target', '_blank').attr('href', v['url']);
+                        trove.append($("<img/>").attr('src', v['logo']));
+                        body.append(trove);
+                        var link = $("<div/>");
+                        link.append($("<a/>").attr('target', '_blank').attr('href', v['url']));
+                        body.append(link);
+                    });
+                }
+                if (station['audio']) {
+                    $.each(station['audio'], function(k, v) {
+                        var audio = $("<div/>").css('padding-top', '0.5em');
+                        audio.append($("<audio/>").attr('src', v['url']).attr('controls', ''));
+                        audio.append($("<br/>"));
+                        audio.append($("<p/>").append("<strong/>").append($("<a/>").attr('href', v['url']).text(v['label'])));
+                        body.append(audio);
+                    });
+                }
                 if (station['twitter']) {
                     $.each(station['twitter'], function(k, v) {
                         var tweet = $("<p/>");
@@ -160,24 +188,11 @@ $(function() {
                         body.append(tweet);
                     });
                 }
-                if (station['audio']) {
-                    $.each(station['audio'], function(k, v) {
-                        var audio = $("<div/>");
-                        audio.append($("<audio/>").attr('src', v['url']).attr('controls', ''));
-                        body.append(audio);
-                    });
-                }
-                if (station['photo']) {
-                    $.each(station['photo'], function(k, v) {
-                        var photo = $("<div/>");
-                        var a = $("<a/>").attr('target', '_blank').attr('href', v['url']);
-                        photo.append($("<img/>").attr('src', v['url']));
-                        body.append(photo);
-                        var link = $("<div/>");
-                        link.append($("<a/>").attr('target', '_blank').attr('href', v['url']));
-                        body.append(link);
-                    });
-                }
+                var visit = $("<p/>");
+                var a = $("<a/>").attr('href', station['url']).attr('target', '_blank');
+                a.text("More about " + station['label'] + ".");
+                visit.append(a);
+                body.append(visit);
             }
             $("#station-dialog").modal();
         };

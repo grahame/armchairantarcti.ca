@@ -86,7 +86,7 @@ if __name__ == '__main__':
                     'jurisdiction' : jurisdiction(row),
                     'url' : url(row),
                     'twitter' : [],
-                    'photos' : [],
+                    'photo' : [],
                     'trove' : [],
                     'audio' : [],
                     'webcam' : []
@@ -102,7 +102,7 @@ if __name__ == '__main__':
                     'last_tweet' : last_tweet(username)
                 })
             elif point_type == "Photo":
-                station['photos'].append({
+                station['photo'].append({
                     'label' : label(row),
                     'url' : url(row)    
                 })
