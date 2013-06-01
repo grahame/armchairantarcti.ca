@@ -90,12 +90,45 @@ $(function() {
             return our_icons[nm].clone();
         };
 
+        var infobar_set = false;
+        var infobar_feed = [];
+        var infobar_idx = 0;
         var set_infobar = function(elem) {
             $("#infobar").empty();
             $("#infobar").append(elem);
+            infobar_set = true;
         };
         var clear_infobar = function() {
             $("#infobar").empty();
+            infobar_set = false;
+            swap_tweetfeed();
+        };
+        var swap_tweetfeed = function() {
+            if (infobar_feed.length == 0) {
+                return;
+            }
+            if (infobar_idx > infobar_feed.length - 1) {
+                infobar_idx = 0;
+            }
+            $("#infobar").empty();
+            $("#infobar").append(infobar_feed[infobar_idx]);
+            infobar_idx = infobar_idx + 1;
+        };
+        setInterval(swap_tweetfeed, 5000);
+        var add_infobar_tweetfeed = function(username) {
+            $.getJSON("https://api.twitter.com/1/statuses/user_timeline/" + username + ".json?count=1&include_rts=1&callback=?",
+                function(data) {
+                    console.log(data[0].text);
+                    var span = $("<span/>");
+                    var text = "@"+username + " - " + data[0].text;
+                    if (text.length > 80) {
+                        text = text.substr(0, 79);
+                        text += "...";
+                    }
+                    span.append($("<img/>").attr('height', '32').attr('width', '32').attr('src', 'twitter-bird-dark-bgs.png'));
+                    span.append($("<a/>").attr('target', '_blank').attr('href', 'http://twitter.com/' + username + '/status/' + data[0].id_str).text(text));
+                    infobar_feed.push(span);
+                });
         };
         var station_label = function(station) {
             var label = station['label'];
@@ -118,6 +151,15 @@ $(function() {
                 a.text("More about " + station['label'] + ".");
                 visit.append(a);
                 body.append(visit);
+
+                if (station['twitter']) {
+                    $.each(station['twitter'], function(k, v) {
+                        var tweet = $("<p/>");
+                        var a = $("<a/>").attr('href', v).text(v);
+                        tweet.append(a);
+                        body.append(tweet);
+                    });
+                }
             }
             $("#station-dialog").modal();
         };
@@ -132,6 +174,12 @@ $(function() {
                     var ll = new OpenLayers.LonLat(v['lng'], v['lat']).transform(proj_wgs84, proj_stereo);
                     var icon = make_or_get_icon(v['icon']);
                     // icon.imageDiv.title = v['label'];
+
+                    if (v['twitter']) {
+                        $.each(v['twitter'], function(k, v) {
+                            add_infobar_tweetfeed(v);
+                        });
+                    }
 
                     var marker = new OpenLayers.Marker(ll, icon);
                     layer.addMarker(marker);

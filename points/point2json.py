@@ -23,6 +23,8 @@ if __name__ == '__main__':
                         v = None
                 return v
             return __made
+        def twitter_username(s):
+            return s.split('/')[-1]
         # stuff we want
         pid = rget("Parent ID", int)
         lat = rget("Latitude", float)
@@ -52,8 +54,17 @@ if __name__ == '__main__':
                     'logo' : logo_profile(row),
                     'established' : established(row),
                     'jurisdiction' : jurisdiction(row),
-                    'url' : url(row)
+                    'url' : url(row),
+                    'twitter' : []
                 }
+            elif stations.has_key(point_id):
+                existing = stations[point_id]
+                if point_type == "Twitter":
+                    existing['twitter'].append(twitter_username(url(row)))
+                else:
+                    print "unhandled subtype", point_type, url(row)
+            else:
+                print "unhandled top type", point_type
         with open('../html/point_data.json', 'w') as wfd:
             json.dump(export, wfd)
 
