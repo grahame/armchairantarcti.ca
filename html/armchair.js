@@ -1,9 +1,9 @@
 $(function() {
-    
+    var proj_wgs84 = new OpenLayers.Projection("EPSG:4326");
     var proj_stereo = new OpenLayers.Projection("EPSG:3031");
     var map = new OpenLayers.Map("map", {
         div: "map",
-        maxExtent: new OpenLayers.Bounds(-26000000,-26000000,26000000,26000000),
+        maxExtent: new OpenLayers.Bounds(-104000000,-104000000,104000000,104000000),
         maxResolution: 13000,
         units: 'meters',
         projection: "EPSG:3031"
@@ -42,16 +42,20 @@ $(function() {
         });
     map.addLayer(seal_layer);
 
-    // var countries = new OpenLayers.Layer.WMS('Country Boundaries',
-    //     'http://nowcoast.noaa.gov/wms/com.esri.wms.Esrimap/geolinks', {
-    //         layers: 'world_countries',
-    //         transparent: 'true',
-    //         srs: "EPSG:3031"
-    //     }, {
-    //         SRS: "EPSG:3031"
-    //     });
-    // map.addLayer(countries);
+    /*
+    var geojson_format = new OpenLayers.Format.GeoJSON();
+    var vector_layer = new OpenLayers.Layer.Vector("countries", {
+        projection: proj_stereo,
+        preFeatureInsert: function(feature) {
+            console.log("pre insert");
+            feature.geometry.transform(proj_wgs84, proj_stereo);
+        }
+    }); 
+    var features = geojson_format.read(window.countries_json);
+    vector_layer.addFeatures(features);
+    map.addLayer(vector_layer);
+    console.log(features);
+    */
 
     map.setCenter(new OpenLayers.LonLat(357500, 58500), 1);
-
 });
