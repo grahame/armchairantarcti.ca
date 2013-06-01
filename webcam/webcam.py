@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 
 import requests, lxml, lxml.etree, sys, os, Image, json
+import traceback
 from StringIO import StringIO
 
 html = lxml.etree.HTMLParser()
 thumb = 128, 128
 
 class Cam(object):
-    def __init__(self, name, uri):
+    def __init__(self, name, uri, descr):
         self.name = name
         self.uri = uri
-        self.update()
 
     def thumb_filename(self):
         return "tn_%s.jpg" % self.name
@@ -35,6 +35,7 @@ class AAD(Cam):
         img_uri = img.get('src')
         # grab image and write out thumbnail
         req = requests.get(img_uri)
+        print(img_uri)
         f = StringIO(req.content)
         im = Image.open(f)
         im.thumbnail(thumb, Image.ANTIALIAS)
@@ -42,12 +43,21 @@ class AAD(Cam):
 
 if __name__ == '__main__':
     webcams = [
-            ( AAD, ("casey", "http://www.antarctica.gov.au/webcams/casey") )
+            ( AAD, ("casey", "http://www.antarctica.gov.au/webcams/casey", "Casey station") ),
+            ( AAD, ("davis", "http://www.antarctica.gov.au/webcams/davis", "Davis station") ),
+            ( AAD, ("macquarie-island", "http://www.antarctica.gov.au/webcams/macquarie-island", "Macquarie Island station") ),
+            ( AAD, ("mawson", "http://www.antarctica.gov.au/webcams/mawson", "Mawson station") ),
             ]
     instances = []
     for cam, args in webcams:
+        print "->", cam, args
         instance = cam(*args)
-        instances.append(instance)
+        try:
+            instance.update()
+            instances.append(instance)
+        except Exception, e:
+            traceback.print_exc()
+
     result = [ t.json() for t in instances ]
     outf = '../html/webcam.json'
     tmpf = outf+ '.t'

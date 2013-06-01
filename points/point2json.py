@@ -2,7 +2,7 @@
 
 # Parser for Helen's crazy point database google doc thing
 
-import json, csv, requests, base64, requests, time, sys
+import json, csv, requests, base64, requests, time, sys, os
 
 if __name__ == '__main__':
     with open('pointdata.csv') as fd:
@@ -124,7 +124,9 @@ if __name__ == '__main__':
                 })
             else:
                 print "unhandled base type", point_type, url(row)
-        with open('../html/point_data.json', 'w') as wfd:
+        outf = '../html/point_data.json'
+        tmpf = outf+'.t'
+        with open(tmpf, 'w') as wfd:
             json.dump(export, wfd, sort_keys=True, indent=4, separators=(',', ': '))
-
+        os.rename(tmpf, outf)
 
