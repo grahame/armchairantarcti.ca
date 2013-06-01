@@ -28,8 +28,12 @@ if __name__ == '__main__':
         lat = rget("Latitude", float)
         lng = rget("Longitude", float)
         icon = rget("Our Icon")
+        logo_profile = rget("Logo/Profile URL")
         label = rget("Label")
         typ = rget("Type")
+        established = rget("Established or Event Date")
+        jurisdiction = rget("Jurisdiction")
+        url = rget("URL")
         export = {}
         stations = export['stations'] = {}
         for row in r:
@@ -44,7 +48,11 @@ if __name__ == '__main__':
                     'lat' : lat(row),
                     'lng' : lng(row), 
                     'icon' : icon(row),
-                    'label' : label(row)
+                    'label' : label(row),
+                    'logo' : logo_profile(row),
+                    'established' : established(row),
+                    'jurisdiction' : jurisdiction(row),
+                    'url' : url(row)
                 }
         with open('../html/point_data.json', 'w') as wfd:
             json.dump(export, wfd)

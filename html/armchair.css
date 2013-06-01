@@ -43,3 +43,12 @@ img.olTileImage {
     padding-right: 1em!important;
     color: #F9B009!important;
 }
+
+#infobar img {
+    max-height: 35px;
+}
+
+img.flag {
+    max-height: 35px;
+    border: 1px solid black;
+}

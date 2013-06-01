@@ -76,22 +76,50 @@ $(function() {
 
     var add_points = function() {
         var our_icons = {};
-        var icon_size = new OpenLayers.Size(21,25);
+        var icon_size = new OpenLayers.Size(32,32);
         var icon_offset = new OpenLayers.Pixel(-(icon_size.w/2), -icon_size.h);
 
+        var icon_url = function(nm) {
+            return 'icons/'+nm;
+        };
         var make_or_get_icon = function(nm) {
             if (1||!our_icons[nm]) {
-                var url = 'icons/'+nm;
+                var url = icon_url(nm);
                 our_icons[nm] = new OpenLayers.Icon(url, icon_size, icon_offset);
             }
             return our_icons[nm].clone();
-        }
+        };
 
-        var set_infobar = function(text) {
-            $("#infobar").text(text);
+        var set_infobar = function(elem) {
+            $("#infobar").empty();
+            $("#infobar").append(elem);
         };
         var clear_infobar = function() {
-            set_infobar("");
+            $("#infobar").empty();
+        };
+        var station_label = function(station) {
+            var label = station['label'];
+            if (station['established']) {
+                label += " (" + station['established'] + ")";
+            }
+            if (station['jurisdiction']) {
+                label += " - " + station['jurisdiction'];
+            }
+            return label;
+        };
+        var show_station_dialog = function(station) {
+            $("#station-dialog-title").text(station_label(station));
+            $("#station-dialog-flag").attr('src', station['logo']);
+            var body = $("#station-dialog-body");
+            body.empty();
+            if (station['url']) {
+                var visit = $("<p/>");
+                var a = $("<a/>").attr('href', station['url']).attr('target', '_blank');
+                a.text("More about " + station['label'] + ".");
+                visit.append(a);
+                body.append(visit);
+            }
+            $("#station-dialog").modal();
         };
 
         $.getJSON("/point_data.json", function(data) {
@@ -108,10 +136,19 @@ $(function() {
                     var marker = new OpenLayers.Marker(ll, icon);
                     layer.addMarker(marker);
                     marker.events.register('mouseover', marker, function(evt) {
-                        set_infobar(v['label']);
+                        var sp = $("<span/>");
+                        sp.append($("<img/>").attr('src', v['logo']).css("padding-right", "1em"));
+                        sp.append($("<span/>").text(station_label(v)));
+                        set_infobar(sp);
+                        // naff, fixme
+                        marker.setUrl(icon_url('inverse-' + v['icon']));
                     });
                     marker.events.register('mouseout', marker, function(evt) {
                         clear_infobar();
+                        marker.setUrl(icon_url(v['icon']));
+                    });
+                    marker.events.register('click', marker, function(evt) {
+                        show_station_dialog(v);
                     });
                 });
             };

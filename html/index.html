@@ -17,7 +17,7 @@
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script src="underscore-min.js"></script>
   <script src="countries.js"></script>
-  <script src="armchair.js"></script>  
+  <script src="armchair.js"></script>
 </head>
 <body>
 
@@ -29,7 +29,7 @@
         </li>
       </ul>
       <p class="navbar-text pull-right infobar">
-        <span id="infobar"></span>
+        <span id="infobar">Hi! Mouse over or tap and see what happens! <small>The red lines are radio-tagged seals :-)</small></span>
       </p>
       </ul>
     </div>
@@ -37,6 +37,19 @@
 
   <div class="row-fluid fill">
     <div id="map">
+    </div>
+  </div>
+
+  <!-- error dialog -->
+  <div id="station-dialog" class="modal hide fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-header">
+      <img id="station-dialog-flag" class="flag" src="" />
+      <strong id="station-dialog-title"></strong>
+    </div>
+    <div class="modal-body" id="station-dialog-body">
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" data-dismiss="modal">Done</button>
     </div>
   </div>
 
