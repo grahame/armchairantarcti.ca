@@ -155,7 +155,7 @@ $(function() {
                 if (station['twitter']) {
                     $.each(station['twitter'], function(k, v) {
                         var tweet = $("<p/>");
-                        var a = $("<a/>").attr('href', 'https://twitter.com/' + v['username']).text('@' + v['username'] + ' on twitter');
+                        var a = $("<a/>").attr('target', '_blank').attr('href', 'https://twitter.com/' + v['username']).text('@' + v['username'] + ' on twitter');
                         tweet.append(a);
                         body.append(tweet);
                     });
@@ -170,11 +170,11 @@ $(function() {
                 if (station['photo']) {
                     $.each(station['photo'], function(k, v) {
                         var photo = $("<div/>");
-                        var a = $("<a/>").attr('href', v['url']);
+                        var a = $("<a/>").attr('target', '_blank').attr('href', v['url']);
                         photo.append($("<img/>").attr('src', v['url']));
                         body.append(photo);
                         var link = $("<div/>");
-                        link.append($("<a/>").attr('href', v['url']));
+                        link.append($("<a/>").attr('target', '_blank').attr('href', v['url']));
                         body.append(link);
                     });
                 }
