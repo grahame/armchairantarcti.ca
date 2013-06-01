@@ -116,10 +116,8 @@ $(function() {
         };
         setInterval(swap_tweetfeed, 5000);
         var add_infobar_tweetfeed = function(twits) {
-            console.log(twits);
             var span = $("<span/>");
             var last = twits['last_tweet'];
-            console.log(last);
             var text = "@"+twits['username'] + " - " + last['text'];
             if (text.length > 80) {
                 text = text.substr(0, 79);
@@ -140,7 +138,6 @@ $(function() {
             return label;
         };
         var show_station_dialog = function(station) {
-            console.log("<<<<< show");
             $("#station-dialog-title").text(station_label(station));
             if (station['logo']) {
                 $("#station-dialog-flag").attr('src', station['logo']).show();
@@ -158,7 +155,7 @@ $(function() {
                 if (station['twitter']) {
                     $.each(station['twitter'], function(k, v) {
                         var tweet = $("<p/>");
-                        var a = $("<a/>").attr('href', 'https://twitter.com/' + v).text('@' + v + ' on twitter');
+                        var a = $("<a/>").attr('href', 'https://twitter.com/' + v['username']).text('@' + v['username'] + ' on twitter');
                         tweet.append(a);
                         body.append(tweet);
                     });
@@ -168,11 +165,19 @@ $(function() {
                         var audio = $("<div/>");
                         audio.append($("<audio/>").attr('src', v['url']).attr('controls', ''));
                         body.append(audio);
-                        console.log("audio");
-                        console.log(v);
                     });
                 }
-                console.log("<<<<< end show");
+                if (station['photo']) {
+                    $.each(station['photo'], function(k, v) {
+                        var photo = $("<div/>");
+                        var a = $("<a/>").attr('href', v['url']);
+                        photo.append($("<img/>").attr('src', v['url']));
+                        body.append(photo);
+                        var link = $("<div/>");
+                        link.append($("<a/>").attr('href', v['url']));
+                        body.append(link);
+                    });
+                }
             }
             $("#station-dialog").modal();
         };
