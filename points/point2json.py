@@ -45,8 +45,9 @@ if __name__ == '__main__':
             point_id = pid(row)
             if point_id is None:
                 continue
-            if point_type == 'Station' and not stations.has_key(point_id):
+            if not stations.has_key(point_id):
                 stations[point_id] = {
+                    'type' : typ(row),
                     'lat' : lat(row),
                     'lng' : lng(row), 
                     'icon' : icon(row),
@@ -63,9 +64,7 @@ if __name__ == '__main__':
                     existing['twitter'].append(twitter_username(url(row)))
                 else:
                     print "unhandled subtype", point_type, url(row)
-            else:
-                print "unhandled top type", point_type
         with open('../html/point_data.json', 'w') as wfd:
-            json.dump(export, wfd)
+            json.dump(export, wfd, sort_keys=True, indent=4, separators=(',', ': '))
 
 

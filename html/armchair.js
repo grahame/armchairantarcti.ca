@@ -118,7 +118,6 @@ $(function() {
         var add_infobar_tweetfeed = function(username) {
             $.getJSON("https://api.twitter.com/1/statuses/user_timeline/" + username + ".json?count=1&include_rts=1&callback=?",
                 function(data) {
-                    console.log(data[0].text);
                     var span = $("<span/>");
                     var text = "@"+username + " - " + data[0].text;
                     if (text.length > 80) {
