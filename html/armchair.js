@@ -55,7 +55,7 @@ $(function() {
         projection: proj_stereo,
         preFeatureInsert: function(feature) {
             var style = {
-                strokeColor: "#00FF00",
+                strokeColor: "#F9B009",
                 strokeWidth: 3,
                 pointRadius: 6,
                 pointerEvents: "visiblePainted",
