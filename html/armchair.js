@@ -89,7 +89,6 @@ $(function() {
 
         var set_infobar = function(text) {
             $("#infobar").text(text);
-            console.log(text);
         };
         var clear_infobar = function() {
             set_infobar("");
@@ -104,7 +103,7 @@ $(function() {
                 $.each(stations, function(k, v) {
                     var ll = new OpenLayers.LonLat(v['lng'], v['lat']).transform(proj_wgs84, proj_stereo);
                     var icon = make_or_get_icon(v['icon']);
-                    icon.imageDiv.title = v['label'];
+                    // icon.imageDiv.title = v['label'];
 
                     var marker = new OpenLayers.Marker(ll, icon);
                     layer.addMarker(marker);
