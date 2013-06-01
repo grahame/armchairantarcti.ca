@@ -1,16 +1,26 @@
 server {
     listen 80;
     client_max_body_size 1m;
+    server_name armchairantarcti.ca armchairantarctica.com;
 
-    location /api/ { 
-        try_files $uri @yourapplication;
-    }
+    gzip on;
+    gzip_disable "msie6";
+
+    gzip_comp_level 6;
+    #gzip_comp_level 9;
+    gzip_min_length  1100;
+    gzip_buffers 16 8k;
+    gzip_proxied any;
+    # gzip_http_version 1.1;
+    gzip_types       text/plain application/xml text/css text/js text/xml application/x-javascript text/javascript application/json application/xml+rss;
+
 
     location / { 
-        alias /home/grahame/armchairantarcti.ca/html/;
+        alias /home/grahame/code/armchair/html/;
     }
-    location @yourapplication {
-        include uwsgi_params;
-        uwsgi_pass 127.0.0.1:8899;
+    location /mapproxy {
+      proxy_pass http://localhost:8080;
+      proxy_set_header Host $http_host;
+      proxy_set_header X-Script-Name /mapproxy;
     }
 }

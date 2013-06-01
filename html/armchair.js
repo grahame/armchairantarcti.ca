@@ -54,46 +54,50 @@ $(function() {
      * GeoJSON layer with country outlines
      */
     var add_world_layer = function() {
-        var geojson_format = new OpenLayers.Format.GeoJSON();
-        var vector_layer = new OpenLayers.Layer.Vector("countries", {
-            projection: proj_stereo,
-            preFeatureInsert: function(feature) {
-                var style = {
-                    strokeColor: "#F9B009",
-                    strokeWidth: 3,
-                    pointRadius: 6,
-                    pointerEvents: "visiblePainted",
-                    title: feature.attributes.name
-                };
-                feature.geometry.transform(proj_wgs84, proj_stereo);
-                feature.style = style;
-            }
-        }); 
-        var features = geojson_format.read(window.countries_json);
-        vector_layer.addFeatures(features);
-        map.addLayer(vector_layer);
+        $.getJSON("/countries.json", function(data) {
+            var geojson_format = new OpenLayers.Format.GeoJSON();
+            var vector_layer = new OpenLayers.Layer.Vector("countries", {
+                projection: proj_stereo,
+                preFeatureInsert: function(feature) {
+                    var style = {
+                        strokeColor: "#F9B009",
+                        strokeWidth: 3,
+                        pointRadius: 6,
+                        pointerEvents: "visiblePainted",
+                        title: feature.attributes.name
+                    };
+                    feature.geometry.transform(proj_wgs84, proj_stereo);
+                    feature.style = style;
+                }
+            }); 
+            var features = geojson_format.read(data);
+            vector_layer.addFeatures(features);
+            map.addLayer(vector_layer);
+        });
     }
 
     /*
      * GeoJSON layer with Antarctic claim outlines
      */
     var add_claim_layer = function() {
-        var geojson_format = new OpenLayers.Format.GeoJSON();
-        var vector_layer = new OpenLayers.Layer.Vector("claims", {
-            projection: proj_stereo,
-            styleMap: new OpenLayers.StyleMap({'default':{
-                strokeColor: "#F9B009",
-                strokeOpacity: 1,
-                strokeWidth: 3,
-                strokeDashstyle: 'dot'
-                // label : "${COUNTRY}",
-                // labelXOffset: "0.5",
-                // labelYOffset: "0.5"
-            }}),
+        $.getJSON("/claims.json", function(data) {
+            var geojson_format = new OpenLayers.Format.GeoJSON();
+            var vector_layer = new OpenLayers.Layer.Vector("claims", {
+                projection: proj_stereo,
+                styleMap: new OpenLayers.StyleMap({'default':{
+                    strokeColor: "#F9B009",
+                    strokeOpacity: 1,
+                    strokeWidth: 3,
+                    strokeDashstyle: 'dot'
+                    // label : "${COUNTRY}",
+                    // labelXOffset: "0.5",
+                    // labelYOffset: "0.5"
+                }}),
+            });
+            var features = geojson_format.read(data);
+            vector_layer.addFeatures(features);
+            map.addLayer(vector_layer);
         });
-        var features = geojson_format.read(window.claims_geojson);
-        vector_layer.addFeatures(features);
-        map.addLayer(vector_layer);
     }
 
     var add_points = function() {
