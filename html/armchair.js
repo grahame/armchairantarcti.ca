@@ -115,19 +115,19 @@ $(function() {
             infobar_idx = infobar_idx + 1;
         };
         setInterval(swap_tweetfeed, 5000);
-        var add_infobar_tweetfeed = function(username) {
-            $.getJSON("https://api.twitter.com/1/statuses/user_timeline/" + username + ".json?count=1&include_rts=1&callback=?",
-                function(data) {
-                    var span = $("<span/>");
-                    var text = "@"+username + " - " + data[0].text;
-                    if (text.length > 80) {
-                        text = text.substr(0, 79);
-                        text += "...";
-                    }
-                    span.append($("<img/>").attr('height', '32').attr('width', '32').attr('src', 'twitter-bird-dark-bgs.png'));
-                    span.append($("<a/>").attr('target', '_blank').attr('href', 'http://twitter.com/' + username + '/status/' + data[0].id_str).text(text));
-                    infobar_feed.push(span);
-                });
+        var add_infobar_tweetfeed = function(twits) {
+            console.log(twits);
+            var span = $("<span/>");
+            var last = twits['last_tweet'];
+            console.log(last);
+            var text = "@"+twits['username'] + " - " + last['text'];
+            if (text.length > 80) {
+                text = text.substr(0, 79);
+                text += "...";
+            }
+            span.append($("<img/>").attr('height', '32').attr('width', '32').attr('src', 'twitter-bird-dark-bgs.png'));
+            span.append($("<a/>").attr('target', '_blank').attr('href', 'http://twitter.com/' + twits['username'] + '/status/' + last['id']).text(text));
+            infobar_feed.push(span);
         };
         var station_label = function(station) {
             var label = station['label'];
@@ -140,8 +140,13 @@ $(function() {
             return label;
         };
         var show_station_dialog = function(station) {
+            console.log("<<<<< show");
             $("#station-dialog-title").text(station_label(station));
-            $("#station-dialog-flag").attr('src', station['logo']);
+            if (station['logo']) {
+                $("#station-dialog-flag").attr('src', station['logo']).show();
+            } else {
+                $("#station-dialog-flag").hide();
+            }
             var body = $("#station-dialog-body");
             body.empty();
             if (station['url']) {
@@ -150,15 +155,24 @@ $(function() {
                 a.text("More about " + station['label'] + ".");
                 visit.append(a);
                 body.append(visit);
-
                 if (station['twitter']) {
                     $.each(station['twitter'], function(k, v) {
                         var tweet = $("<p/>");
-                        var a = $("<a/>").attr('href', v).text(v);
+                        var a = $("<a/>").attr('href', 'https://twitter.com/' + v).text('@' + v + ' on twitter');
                         tweet.append(a);
                         body.append(tweet);
                     });
                 }
+                if (station['audio']) {
+                    $.each(station['audio'], function(k, v) {
+                        var audio = $("<div/>");
+                        audio.append($("<audio/>").attr('src', v['url']).attr('controls', ''));
+                        body.append(audio);
+                        console.log("audio");
+                        console.log(v);
+                    });
+                }
+                console.log("<<<<< end show");
             }
             $("#station-dialog").modal();
         };
@@ -173,13 +187,11 @@ $(function() {
                     var ll = new OpenLayers.LonLat(v['lng'], v['lat']).transform(proj_wgs84, proj_stereo);
                     var icon = make_or_get_icon(v['icon']);
                     // icon.imageDiv.title = v['label'];
-
                     if (v['twitter']) {
                         $.each(v['twitter'], function(k, v) {
                             add_infobar_tweetfeed(v);
                         });
                     }
-
                     var marker = new OpenLayers.Marker(ll, icon);
                     layer.addMarker(marker);
                     marker.events.register('mouseover', marker, function(evt) {

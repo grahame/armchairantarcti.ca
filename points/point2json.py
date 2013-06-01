@@ -2,7 +2,7 @@
 
 # Parser for Helen's crazy point database google doc thing
 
-import json, csv
+import json, csv, requests, base64, requests, time, sys
 
 if __name__ == '__main__':
     with open('pointdata.csv') as fd:
@@ -25,6 +25,35 @@ if __name__ == '__main__':
             return __made
         def twitter_username(s):
             return s.split('/')[-1]
+        def last_tweet(username):
+            ### mmm
+            cache_file = base64.encodestring(username).strip().rstrip('=') + '.json'
+            info = None
+            try:
+                with open(cache_file, 'r') as fd:
+                    info = json.load(fd)
+            except IOError:
+                pass
+            now = time.time()
+            if info is not None and (now - info.get('time', 0)) > 86400:
+                info = None
+            if info is None:
+                print "updating tweets for", username
+                req = requests.get(
+                    "https://api.twitter.com/1/statuses/user_timeline/" + username + ".json?count=1&include_rts=1&callback=")
+                if req.status_code != requests.codes.ok:
+                    req.raise_for_status()
+                info = {
+                    'time' : now,
+                    'tweet' : json.loads(req.content)
+                }
+            with open(cache_file, 'w') as fd:
+                json.dump(info, fd)
+            return {
+                'text' : info['tweet'][0]['text'],
+                'id' : info['tweet'][0]['id_str']
+                }
+
         # stuff we want
         pid = rget("Parent ID", int)
         lat = rget("Latitude", float)
@@ -67,7 +96,11 @@ if __name__ == '__main__':
             if point_type == "Station":
                 pass
             elif point_type == "Twitter":
-                station['twitter'].append(twitter_username(url(row)))
+                username = twitter_username(url(row))
+                station['twitter'].append({
+                    'username' : username,
+                    'last_tweet' : last_tweet(username)
+                })
             elif point_type == "Photo":
                 station['photos'].append({
                     'label' : label(row),
