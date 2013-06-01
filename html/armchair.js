@@ -77,23 +77,20 @@ $(function() {
     /*
      * GeoJSON layer with Antarctic claim outlines
      */
-    var add_world_layer = function() {
+    var add_claim_layer = function() {
         var geojson_format = new OpenLayers.Format.GeoJSON();
         var vector_layer = new OpenLayers.Layer.Vector("claims", {
             projection: proj_stereo,
-            preFeatureInsert: function(feature) {
-                var style = {
-                    strokeColor: "#F9B009",
-                    strokeWidth: 3,
-                    strokeDashstyle: 'dot',
-                    pointRadius: 6,
-                    pointerEvents: "visiblePainted",
-                    title: feature.attributes.name
-                };
-                //feature.geometry.transform(proj_wgs84, proj_stereo);
-                feature.style = style;
-            }
-        }); 
+            styleMap: new OpenLayers.StyleMap({'default':{
+                strokeColor: "#F9B009",
+                strokeOpacity: 1,
+                strokeWidth: 3,
+                strokeDashstyle: 'dot'
+                // label : "${COUNTRY}",
+                // labelXOffset: "0.5",
+                // labelYOffset: "0.5"
+            }}),
+        });
         var features = geojson_format.read(window.claims_geojson);
         vector_layer.addFeatures(features);
         map.addLayer(vector_layer);
@@ -185,8 +182,6 @@ $(function() {
                 }
                 if (station['trove']) {
                     $.each(station['trove'], function(k, v) {
-                        console.log("TROVE");
-                        console.log(v);
                         var trove = $("<div/>").attr('align', 'center');
                         var a = $("<a/>").attr('target', '_blank').attr('href', v['url']).text(v['label']);
                         trove.append($("<img/>").attr('src', v['logo']));
@@ -263,6 +258,7 @@ $(function() {
     /* main initialisation code */
     add_lima_layer();
     add_world_layer();
+    add_claim_layer();
     add_points();
 
     make_imos_layer("Seal tracking", "imos:ctd_profile_mdb_workflow_vw_recent");
