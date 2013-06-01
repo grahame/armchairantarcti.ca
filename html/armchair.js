@@ -74,6 +74,31 @@ $(function() {
         map.addLayer(vector_layer);
     }
 
+    /*
+     * GeoJSON layer with Antarctic claim outlines
+     */
+    var add_world_layer = function() {
+        var geojson_format = new OpenLayers.Format.GeoJSON();
+        var vector_layer = new OpenLayers.Layer.Vector("claims", {
+            projection: proj_stereo,
+            preFeatureInsert: function(feature) {
+                var style = {
+                    strokeColor: "#F9B009",
+                    strokeWidth: 3,
+                    strokeDashstyle: 'dot',
+                    pointRadius: 6,
+                    pointerEvents: "visiblePainted",
+                    title: feature.attributes.name
+                };
+                //feature.geometry.transform(proj_wgs84, proj_stereo);
+                feature.style = style;
+            }
+        }); 
+        var features = geojson_format.read(window.claims_geojson);
+        vector_layer.addFeatures(features);
+        map.addLayer(vector_layer);
+    }
+
     var add_points = function() {
         var our_icons = {};
         var icon_size = new OpenLayers.Size(32,32);
