@@ -109,7 +109,8 @@ if __name__ == '__main__':
             elif point_type == "Trove Article":
                 station['trove'].append({
                     'label' : label(row),
-                    'url' : url(row)
+                    'url' : url(row),
+                    'logo' : logo_profile(row)
                 })
             elif point_type == "Audio":
                 station['audio'].append({

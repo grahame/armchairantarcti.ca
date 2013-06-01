@@ -161,9 +161,9 @@ $(function() {
                 if (station['trove']) {
                     $.each(station['trove'], function(k, v) {
                         console.log("TROVE");
-                        console.log(v['url']);
+                        console.log(v);
                         var trove = $("<div/>").attr('align', 'center');
-                        var a = $("<a/>").attr('target', '_blank').attr('href', v['url']);
+                        var a = $("<a/>").attr('target', '_blank').attr('href', v['url']).text(v['label']);
                         trove.append($("<img/>").attr('src', v['logo']));
                         body.append(trove);
                         var link = $("<div/>");
