@@ -76,8 +76,28 @@ $(function() {
     }
 
     var add_points = function() {
+        var our_icons = {};
+        var icon_size = new OpenLayers.Size(21,25);
+        var icon_offset = new OpenLayers.Pixel(-(icon_size.w/2), -icon_size.h);
+
+        var make_or_get_icon = function(nm) {
+            if (1||!our_icons[nm]) {
+                var url = 'icons/'+nm;
+                our_icons[nm] = new OpenLayers.Icon(url, icon_size, icon_offset);
+            }
+            return our_icons[nm].clone();
+        }
+
         $.getJSON("/point_data.json", function(data) {
-            console.log(data);
+            /* annotate the stations */
+            var stations_layer = new OpenLayers.Layer.Markers("Stations");
+            map.addLayer(stations_layer);
+            var stations = data['stations'];
+            $.each(stations, function(k, v) {
+                var ll = new OpenLayers.LonLat(v['lng'], v['lat']).transform(proj_wgs84, proj_stereo);
+                var icon = make_or_get_icon(v['icon']);
+                stations_layer.addMarker(new OpenLayers.Marker(ll, icon));
+            });
         });
     }
 
