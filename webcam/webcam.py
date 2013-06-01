@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import requests, lxml, lxml.etree, sys, os, Image
+import requests, lxml, lxml.etree, sys, os, Image, json
 from StringIO import StringIO
 
 html = lxml.etree.HTMLParser()
@@ -8,7 +8,7 @@ thumb = 128, 128
 
 class Cam(object):
     def __init__(self, name, uri):
-        self.name = uri
+        self.name = name
         self.uri = uri
         self.update()
 
@@ -49,4 +49,9 @@ if __name__ == '__main__':
         instance = cam(*args)
         instances.append(instance)
     result = [ t.json() for t in instances ]
+    outf = '../html/webcam.json'
+    tmpf = outf+ '.t'
+    with open(tmpf, 'w') as fd:
+        json.dump(result, fd)
+    os.rename(tmpf, outf)
 
