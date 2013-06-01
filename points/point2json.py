@@ -28,6 +28,7 @@ if __name__ == '__main__':
         lat = rget("Latitude", float)
         lng = rget("Longitude", float)
         icon = rget("Our Icon")
+        label = rget("Label")
         typ = rget("Type")
         export = {}
         stations = export['stations'] = {}
@@ -42,7 +43,8 @@ if __name__ == '__main__':
                 stations[point_id] = {
                     'lat' : lat(row),
                     'lng' : lng(row), 
-                    'icon' : icon(row)
+                    'icon' : icon(row),
+                    'label' : label(row)
                 }
         with open('../html/point_data.json', 'w') as wfd:
             json.dump(export, wfd)

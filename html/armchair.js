@@ -11,7 +11,6 @@ $(function() {
         projection: "EPSG:3031"
     });
     map.addControl(new OpenLayers.Control.LayerSwitcher());
-
     /* for debugging, get rid of later */
     window.map = map;
     window.proj_wgs84 = proj_wgs84;
@@ -88,16 +87,36 @@ $(function() {
             return our_icons[nm].clone();
         }
 
+        var set_infobar = function(text) {
+            $("#infobar").text(text);
+            console.log(text);
+        };
+        var clear_infobar = function() {
+            set_infobar("");
+        };
+
         $.getJSON("/point_data.json", function(data) {
-            /* annotate the stations */
-            var stations_layer = new OpenLayers.Layer.Markers("Stations");
-            map.addLayer(stations_layer);
-            var stations = data['stations'];
-            $.each(stations, function(k, v) {
-                var ll = new OpenLayers.LonLat(v['lng'], v['lat']).transform(proj_wgs84, proj_stereo);
-                var icon = make_or_get_icon(v['icon']);
-                stations_layer.addMarker(new OpenLayers.Marker(ll, icon));
-            });
+            var make_stations = function() {
+                /* annotate the stations */
+                var layer = new OpenLayers.Layer.Markers("Stations");
+                map.addLayer(layer);
+                var stations = data['stations'];
+                $.each(stations, function(k, v) {
+                    var ll = new OpenLayers.LonLat(v['lng'], v['lat']).transform(proj_wgs84, proj_stereo);
+                    var icon = make_or_get_icon(v['icon']);
+                    icon.imageDiv.title = v['label'];
+
+                    var marker = new OpenLayers.Marker(ll, icon);
+                    layer.addMarker(marker);
+                    marker.events.register('mouseover', marker, function(evt) {
+                        set_infobar(v['label']);
+                    });
+                    marker.events.register('mouseout', marker, function(evt) {
+                        clear_infobar();
+                    });
+                });
+            };
+            make_stations();
         });
     }
 

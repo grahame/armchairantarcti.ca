@@ -39,3 +39,7 @@ img.olTileImage {
     white-space:pre-wrap;
 }
 
+.infobar {
+    padding-right: 1em!important;
+    color: #F9B009!important;
+}
