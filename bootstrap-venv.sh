@@ -1,12 +1,12 @@
 #
 # set up virtualenv
 #
-VENV=~/venv
+VENV=~/venv.armchair
 
 rm -rf $VENV
 virtualenv --system-site-packages $VENV
 . $VENV/bin/activate
-#$VENV/bin/easy_install simplejson markdown flask flask-sqlalchemy openpyxl
+$VENV/bin/easy_install simplejson markdown flask flask-sqlalchemy openpyxl
 
 (cd mapproxy && python setup.py install )
-VENV/bin/pip install eventlet gunicorn
+$VENV/bin/pip install eventlet gunicorn

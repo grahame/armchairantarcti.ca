@@ -5,7 +5,7 @@ seeds:
     coverages: [antarctica]
     levels:
       from: 0
-      to: 8
+      to: 12
 
 coverages:
   antarctica:

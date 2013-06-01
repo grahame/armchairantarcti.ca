@@ -5,7 +5,7 @@ services:
 grids:
   antarctica:
     srs: 'EPSG:3031'
-    bbox: [-3250000, -3250000, 3250000, 3250000]
+    bbox: [-26000000, -26000000, 26000000, 26000000]
     bbox_srs: 'EPSG:3031'
   antarctica_sqrt2:
     base: antarctica
@@ -32,9 +32,9 @@ sources:
 globals:
   cache:
     # where to store the cached images
-    base_dir: './cache_data'
+    base_dir: '/tank/armchair/cache_data'
     # where to store lockfiles
-    lock_dir: './cache_data/locks'
+    lock_dir: '/tank/armchair/cache_data/locks'
 
   # image/transformation options
   image:

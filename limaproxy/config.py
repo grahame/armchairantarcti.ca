@@ -10,4 +10,4 @@ import os
 print(os.environ['VIRTUAL_ENV'])
 
 from mapproxy.wsgiapp import make_wsgi_app
-application = make_wsgi_app(r'/home/grahame/armchairantarcti.ca/limaproxy/mapproxy.yaml')
+application = make_wsgi_app(r'/home/grahame/code/armchair/limaproxy/mapproxy.yaml')
