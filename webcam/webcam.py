@@ -19,6 +19,17 @@ class Cam(object):
     def thumb_path(self):
         return os.path.join("../html/webcam/", self.thumb_filename())
 
+    def make_thumb(self, img_uri):
+        print "thumbnail:", img_uri
+        req = requests.get(img_uri)
+        outf = self.thumb_path()
+        tmpf = outf + '.t'
+        f = StringIO(req.content)
+        im = Image.open(f)
+        im.thumbnail(thumb, Image.ANTIALIAS)
+        im.save(tmpf, "JPEG")
+        os.rename(tmpf, outf)
+
     def json(self):
         return {
             "name" : self.name,
@@ -29,19 +40,20 @@ class Cam(object):
 
 class AAD(Cam):
     def update(self):
-        # scrape home page
         req = requests.get(self.uri)
         f = StringIO(req.content)
         et = lxml.etree.parse(f, html)
         img = et.xpath('//div[@id="article"]/div/div/img')[0]
-        img_uri = img.get('src')
-        # grab image and write out thumbnail
-        req = requests.get(img_uri)
-        print(img_uri)
+        self.make_thumb(img.get('src'))
+
+class Kiwi(Cam):
+    def update(self):
+        req = requests.get(self.uri)
         f = StringIO(req.content)
-        im = Image.open(f)
-        im.thumbnail(thumb, Image.ANTIALIAS)
-        im.save(self.thumb_path(), "JPEG")
+        et = lxml.etree.parse(f, html)
+        img = et.xpath('//div[@id="article"]/div/div/img')[0]
+        self.make_thumb(img.get('src'))
+
 
 if __name__ == '__main__':
     webcams = [

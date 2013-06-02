@@ -248,6 +248,14 @@ $(function() {
                         body.append(audio);
                     });
                 }
+                if (station['webcam']) {
+                    $.each(station['webcam'], function(k, v) {
+                        var cam = $("<div/>");
+                        var a = $("<a/>").attr("target", "_blank").attr('href', v['url']).text("View webcam: " + v['label']);
+                        cam.append(a);
+                        body.append(cam);
+                    });
+                }
                 if (station['twitter']) {
                     $.each(station['twitter'], function(k, v) {
                         var tweet = $("<p/>");
