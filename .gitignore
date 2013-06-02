@@ -9,3 +9,8 @@ OpenLayers-2.12
 __pycache__
 tmp/
 limaproxy/cache_data/
+points/*.json
+html/webcam.json
+html/point_data.json
+html/webcam/
+OpenLayers-2.13-rc5

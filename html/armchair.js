@@ -264,7 +264,9 @@ $(function() {
                 if (station['twitter']) {
                     $.each(station['twitter'], function(k, v) {
                         var tweet = $("<p/>");
-                        var a = $("<a/>").attr('target', '_blank').attr('href', 'https://twitter.com/' + v['username']).text('@' + v['username'] + ' on twitter');
+                        var a = $("<a/>").attr('target', '_blank').attr('href', 'https://twitter.com/' + v['username']);
+                        a.append($("<img/>").attr('src', 'twitter-bird-light-bgs.png'));
+                        a.append($("<span/>").text('@' + v['username'] + ' on Twitter'));
                         tweet.append(a);
                         body.append(tweet);
                     });
