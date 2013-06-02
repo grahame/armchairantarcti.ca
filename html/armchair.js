@@ -18,6 +18,21 @@ $(function() {
         $("#key-dialog").modal();
     });
 
+    $("#launch-territories").click(function(ev) {
+        ev.preventDefault();
+        $("#territories-dialog").modal();
+    });
+
+    $("#launch-expeditions").click(function(ev) {
+        ev.preventDefault();
+        $("#expeditions-dialog").modal();
+    });
+
+    $("#launch-about").click(function(ev) {
+        ev.preventDefault();
+        $("#about-dialog").modal();
+    });
+
     map.addControl(new OpenLayers.Control.LayerSwitcher());
     /* for debugging, get rid of later */
     window.map = map;
