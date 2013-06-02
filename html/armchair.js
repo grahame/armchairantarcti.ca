@@ -12,6 +12,12 @@ $(function() {
     });
     var top_layer;
 
+    // wire up top buttons
+    $("#launch-key").click(function(ev) {
+        ev.preventDefault();
+        $("#key-dialog").modal();
+    });
+
     map.addControl(new OpenLayers.Control.LayerSwitcher());
     /* for debugging, get rid of later */
     window.map = map;
