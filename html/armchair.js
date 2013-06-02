@@ -12,6 +12,21 @@ $(function() {
     });
     var top_layer;
 
+    // we might need to wait for twitter to load; messy!
+    var twitter_reload = function() {
+        var tries = 0;
+        var interval = 50;
+        var attempt = function() {
+            tries++;
+            if (window["twttr"] || (tries >= 100)) {
+                twttr.widgets.load();
+                return;
+            }
+            window.setTimeout(attempt, interval);
+        }
+        window.setTimeout(attempt, interval);
+    }
+
     // wire up top buttons
     $("#launch-key").click(function(ev) {
         ev.preventDefault();
@@ -234,6 +249,7 @@ $(function() {
             body.empty();
         });
         var show_station_dialog = function(station) {
+            window.location.hash = "#" + station.id;
             $("#station-dialog-title").text(station_label(station));
             if (station['logo']) {
                 $("#station-dialog-flag").attr('src', station['logo']).show();
@@ -243,6 +259,15 @@ $(function() {
             var body = $("#station-dialog-body");
             body.empty();
             if (station['url']) {
+                $("#twitter-placeholder").empty()
+                    .html('<a href="https://twitter.com/share">Tweet</a>')
+                    .children('a')
+                    .attr('data-url', 'http://armchairantarcti.ca/#' + station['id'])
+                    .attr('data-text', $.trim(station.label) + ' - Armchair Antarctica')
+                    .attr('data-hashtags', 'govhack')
+                    .attr('data-via', 'armchairtica')
+                    .addClass('twitter-share-button');
+                twitter_reload();
                 if (station['photo']) {
                     $.each(station['photo'], function(k, v) {
                         var photo = $("<div/>").attr('align', 'center').css('padding-bottom', '0.5em');
@@ -338,6 +363,19 @@ $(function() {
                 top_ontop();
             };
             make_stations();
+            var h = window.location.hash.substr(1, window.location.hash.length-1);
+            if (h.length > 0) {
+                var match = null;
+                var stations = data['stations'];
+                $.each(stations, function(k, v) {
+                    if (v.id == h) {
+                        match = v;
+                    }
+                });
+                if (match) {
+                    show_station_dialog(match);
+                }
+            }
         });
     }
 
