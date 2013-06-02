@@ -71,7 +71,7 @@ $(function() {
                 preFeatureInsert: function(feature) {
                     var style = {
                         strokeColor: "#F9B009",
-                        strokeWidth: 3,
+                        strokeWidth: 1,
                         pointRadius: 6,
                         pointerEvents: "visiblePainted",
                         title: feature.attributes.name
