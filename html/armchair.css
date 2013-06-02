@@ -64,3 +64,8 @@ img.flag {
     margin:0;
     padding:0;
 }
+
+.navbar-inverse .navbar-inner {
+    background-color: black!important;
+    background-image: none!important;
+}

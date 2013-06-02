@@ -76,6 +76,7 @@ if __name__ == '__main__':
                 continue
             if not stations.has_key(point_id):
                 station = stations[point_id] = {
+                    'id' : point_id,
                     'type' : typ(row),
                     'lat' : lat(row),
                     'lng' : lng(row), 
