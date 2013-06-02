@@ -20,7 +20,6 @@ $(function() {
 
     var top_ontop = function() {
         if (top_layer) {
-            console.log("top_ontop");
             map.setLayerIndex(top_layer, map.layers.length);
         }
     }
@@ -126,7 +125,6 @@ $(function() {
                     webcam_idx = 0;
                 }
                 var cam = webcams[webcam_idx];
-                console.log(cam);
                 $("#webcam-img").attr('src', cam['tn']);
                 $("#webcam-a").attr('href', cam['uri']).attr('target', '_blank');
                 $("#webcam-name").text(cam['descr']);
@@ -164,23 +162,29 @@ $(function() {
         var clear_infobar = function() {
             $("#infobar").empty();
             infobar_set = false;
-            swap_tweetfeed();
+            swap_tweetfeed("r");
         };
-        var swap_tweetfeed = function() {
+        var swap_tweetfeed = function(mode) {
             if (infobar_set) {
                 return;
             }
             if (infobar_feed.length == 0) {
                 return;
             }
+            if (mode != "r") {
+                infobar_idx++;
+            }
             if (infobar_idx > infobar_feed.length - 1) {
                 infobar_idx = 0;
             }
             $("#infobar").empty();
             $("#infobar").append(infobar_feed[infobar_idx]);
-            infobar_idx++;
         };
-        setInterval(swap_tweetfeed, 5000);
+        var start_tweetfeed = function() {
+            swap_tweetfeed("r");
+            setInterval(swap_tweetfeed, 5000);
+        }
+        setTimeout(start_tweetfeed, 5000);
         var add_infobar_tweetfeed = function(twits) {
             var span = $("<span/>");
             var last = twits['last_tweet'];
