@@ -217,8 +217,8 @@ $(function() {
                     $.each(station['photo'], function(k, v) {
                         var photo = $("<div/>").attr('align', 'center').css('padding-bottom', '0.5em');
                         var a = $("<a/>").attr('target', '_blank').attr('href', v['url']);
-                        photo.append($("<img/>").attr('src', v['url']));
-                        body.append(photo);
+                        a.append($("<img/>").attr('src', v['url']));
+                        body.append(a);
                         var link = $("<div/>");
                         link.append($("<a/>").attr('target', '_blank').attr('href', v['url']).text(v['label']));
                         body.append(link);
@@ -227,10 +227,10 @@ $(function() {
                 if (station['trove']) {
                     $.each(station['trove'], function(k, v) {
                         var trove = $("<div/>").attr('align', 'center');
-                        var a = $("<a/>").attr('target', '_blank').attr('href', v['url']).text(v['label']);
-                        trove.append($("<img/>").attr('src', v['logo']));
-                        body.append(trove);
-                        var link = $("<div/>");
+                        var a = $("<a/>").attr('target', '_blank').attr('href', v['url']);
+                        a.append($("<img/>").attr('src', v['logo']));
+                        body.append(a);
+                        var link = $("<div/>").css('padding-bottom', '1em');
                         link.append($("<a/>").attr('target', '_blank').attr('href', v['url']).text(v['label'] + ' on Trove'));
                         body.append(link);
                     });
