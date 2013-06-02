@@ -1,5 +1,5 @@
 
-armchairantarti.ca -- see http://armchairantarti.ca/ for the live version.
+armchairantarti.ca -- see http://armchairantarcti.ca/ for the live version.
 
 The scripts points/run.s and webcam/run.s need to be launched periodically 
 from cron.
