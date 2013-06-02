@@ -246,6 +246,7 @@ $(function() {
         $("#station-dialog-done").click(function(ev) {
             ev.preventDefault();
             var body = $("#station-dialog-body");
+            window.location.hash = "";
             body.empty();
         });
         var show_station_dialog = function(station) {
