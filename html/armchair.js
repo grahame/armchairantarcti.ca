@@ -207,6 +207,11 @@ $(function() {
             }
             return label;
         };
+        $("#station-dialog-done").click(function(ev) {
+            ev.preventDefault();
+            var body = $("#station-dialog-body");
+            body.empty();
+        });
         var show_station_dialog = function(station) {
             $("#station-dialog-title").text(station_label(station));
             if (station['logo']) {
