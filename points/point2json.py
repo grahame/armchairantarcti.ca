@@ -39,8 +39,9 @@ if __name__ == '__main__':
                 info = None
             if info is None:
                 print "updating tweets for", username
-                req = requests.get(
-                    "https://api.twitter.com/1/statuses/user_timeline/" + username + ".json?count=1&include_rts=1&callback=")
+                url = "https://api.twitter.com/1/statuses/user_timeline/" + username + ".json?count=1&include_rts=1&callback="
+                print url
+                req = requests.get(url)
                 if req.status_code != requests.codes.ok:
                     req.raise_for_status()
                 info = {

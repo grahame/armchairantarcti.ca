@@ -387,6 +387,6 @@ $(function() {
     add_points();
     go_webcams();
 
-    make_imos_layer("Seal tracking", "imos:ctd_profile_mdb_workflow_vw_recent");
+    //make_imos_layer("Seal tracking", "imos:ctd_profile_mdb_workflow_vw_recent");
     map.setCenter(new OpenLayers.LonLat(357500, 58500), 0);
 });
