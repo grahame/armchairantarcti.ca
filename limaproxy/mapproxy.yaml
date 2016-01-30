@@ -32,9 +32,9 @@ sources:
 globals:
   cache:
     # where to store the cached images
-    base_dir: '/tank/armchair/cache_data'
+    base_dir: '/data/cache/'
     # where to store lockfiles
-    lock_dir: '/tank/armchair/cache_data/locks'
+    lock_dir: '/data/locks/'
 
   # image/transformation options
   image:
