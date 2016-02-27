@@ -62,7 +62,7 @@ $(function() {
 
     var add_lima_layer = function() {
         var lima_layer = new OpenLayers.Layer.WMS("lima", 
-            "http://armchairantarcti.ca/mapproxy/service", {
+            "https://armchairantarcti.ca/mapproxy/service", {
                 layers: "MOA_125_HP1_150_170_STRETCH",
                 srs: "EPSG:3031",
                 transparent: false
@@ -387,6 +387,6 @@ $(function() {
     add_points();
     go_webcams();
 
-    make_imos_layer("Seal tracking", "imos:ctd_profile_mdb_workflow_vw_recent");
+    //make_imos_layer("Seal tracking", "imos:ctd_profile_mdb_workflow_vw_recent");
     map.setCenter(new OpenLayers.LonLat(357500, 58500), 0);
 });
