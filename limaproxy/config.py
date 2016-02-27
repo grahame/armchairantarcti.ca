@@ -7,7 +7,6 @@
 ### fileConfig(r'/home/grahame/armchairantarcti.ca/limaproxy/log.ini', {'here': os.path.dirname(__file__)})
 
 import os
-print(os.environ['VIRTUAL_ENV'])
 
 from mapproxy.wsgiapp import make_wsgi_app
-application = make_wsgi_app(r'/home/grahame/code/armchair/limaproxy/mapproxy.yaml')
+application = make_wsgi_app(r'/app/limaproxy/mapproxy.yaml')

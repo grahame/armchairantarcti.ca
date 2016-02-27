@@ -21,8 +21,16 @@ ENV GITTAG $GIT_TAG
 # postgis is only needed for the shp2pgsql binary
 RUN apt-get update && apt-get install -y --no-install-recommends \
       python \
+      python-yaml \
       python-pip \
       python-pillow \
+      python-eventlet \
+      libproj0 \
+      python-lxml \
+      libgeos-dev \
+      libgdal-dev \
+      python-shapely \
+      gunicorn \
       wget less git && \
   apt-get autoremove -y --purge && \
   apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -36,6 +44,7 @@ RUN pip ${PIP_OPTS} install \
   rm -rf /root/.cache/pip/
 
 COPY . /app
+RUN cd /app/mapproxy && python setup.py install
 
 RUN adduser --system --uid 1000 --shell /bin/bash armchair
 USER armchair
